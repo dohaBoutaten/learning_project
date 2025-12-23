@@ -12,6 +12,7 @@ urlpatterns = [
     path('communaute/', views.communaute, name='communaute'),
     path('certifications/', views.certifications, name='certifications'),
     path('parametres/', views.parametres, name='parametres'),
+    path('logout/', views.logout_view, name='logout'),
 
 # ============================================
 # VUES ADMINISTRATEUR
@@ -19,6 +20,11 @@ urlpatterns = [
     path('administrateur/courses/', views.admin_courses, name='administrateur_courses'),
     path('administrateur/users/', views.admin_users, name='administrateur_users'),
     path('administrateur/dashboard/', views.admin_dashboard, name='administrateur_dashboard'),
+    path('administrateur/users/add/', views.add_user, name='add_user'),
+    path("administrateur/users/edit/", views.edit_user, name="edit_user"),
+    path("administrateur/users/delete/", views.delete_user, name="delete_user"),
+
+
 
 # ============================================
 # VUES UTILISATEUR

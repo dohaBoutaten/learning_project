@@ -187,14 +187,15 @@
     }
     /* sidebar*/
     aside .sidebar{
-        display: flex;
-        flex-direction: column;
-        height: 86vh;
-        position: relative;
-        top: 2.8rem;
-        padding: 0 0.5rem; /* Padding réduit */
-        width: 100%;
-        gap: 0.5rem; /* Réduit l'espace entre les liens */
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            position: relative;
+            top: 2.8rem;
+            padding: 0 0.5rem;
+            width: 100%;
+            gap: 0.5rem;
+            
     }
     aside h3{
         font-weight: 500;
@@ -224,7 +225,7 @@
     }
     aside .sidebar a:last-child{
         position: absolute;
-        bottom: 0.5rem; /* Réduit de 1.8rem à 0.5rem */
+        bottom: 5vh; /* Réduit de 1.8rem à 0.5rem */
         width: calc(100% - 1rem);
         left: 0.5rem;
         margin-top: 0; /* Supprime la marge */
@@ -1222,9 +1223,9 @@
 
             </a>
           
-            <a href="#">
-                <span class="material-symbols-outlined">logout</span>
-                <h3>Déconnexion</h3>
+            <a href="{% url 'logout' %}">
+                    <span class="material-symbols-outlined">logout</span>
+                    <h3>Déconnexion</h3>
             </a>
         </div>
     </aside>

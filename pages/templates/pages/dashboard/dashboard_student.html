@@ -421,7 +421,7 @@
 <!-- Top Bar -->
 <div class="top-bar">
     <div class="welcome-section">
-        <h1>Bonjour, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %} ! 👋</h1>
+        <h1>Bonjour  {% if user.nom %}{{ user.prenom }}{% else %}{{ user.username }}{% endif %} ! 👋</h1>
         <p>Voici votre progression et vos activités récentes</p>
     </div>
     <div class="current-date">
