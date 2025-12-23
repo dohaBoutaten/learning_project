@@ -704,6 +704,71 @@
             animation: shake 0.5s ease-in-out;
             border-color: #f44336 !important;
         }
+
+      /* Container centré */
+#toast-container {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+/* Toast box */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 320px;
+    padding: 16px 22px;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    animation: slideDown 0.5s ease;
+    position: relative;
+}
+
+/* Success */
+.toast-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+/* Icon */
+.toast-icon {
+    font-size: 22px;
+}
+
+/* Text */
+.toast-text {
+    flex: 1;
+}
+
+/* Close */
+.toast-close {
+    cursor: pointer;
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+.toast-close:hover {
+    opacity: 1;
+}
+
+/* Animation */
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+}
+
     </style>
 </head>
 <body>
@@ -725,6 +790,8 @@
             </div>
         </div>
     </header>
+    
+
 
     <!-- Page de connexion principale -->
     <main class="login-page">
@@ -751,9 +818,7 @@
                             <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1rem;">
                                 <path d="M12 15C15.3137 15 18 12.3137 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 12.3137 8.68629 15 12 15Z" stroke="white" stroke-width="2"/>
                                 <path d="M2.905 19.25C3.827 16.077 7.554 14 12 14C16.446 14 20.173 16.077 21.095 19.25" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M12 8V12L15 15" stroke="#E3F2FD" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M19 8L21 10L23 6" stroke="#E3F2FD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                                </svg>
                             <div style="font-size: 1.5rem; font-weight: 700;">Apprentissage Continu</div>
                             <div style="font-size: 1rem; opacity: 0.9; margin-top: 0.5rem;">Accédez à vos cours où que vous soyez</div>
                         </div>
@@ -793,11 +858,21 @@
                     </div>
                     
                     <!-- Formulaire de connexion -->
-                    <form class="login-form" id="loginForm">
+                    <form class="login-form" id="loginForm" method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+           <p style="color:red; text-align:center;">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
                         <div class="form-group">
                             <label for="email" class="form-label">Adresse email</label>
                             <div class="input-with-icon">
-                                <input type="email" name="username" class="form-input" placeholder="votre@email.com" required>
+                                <input type="email" name="email" class="form-input" placeholder="votre@email.com" required>
                                 <div class="input-icon">
                                     <i class="fas fa-envelope"></i>
                                 </div>
@@ -807,7 +882,7 @@
                         <div class="form-group">
                             <label for="password" class="form-label">Mot de passe</label>
                             <div class="input-with-icon">
-                                <input type="password" name="password" class="form-input" placeholder="Votre mot de passe" required>
+                                <input type="password" name="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
                                 <div class="input-icon">
                                     <i class="fas fa-lock"></i>
                                 </div>
@@ -822,39 +897,19 @@
                                 <input type="checkbox" id="remember" class="remember-checkbox">
                                 <label for="remember" class="remember-label">Se souvenir de moi</label>
                             </div>
-                            <a href="{% url 'administrateur_dashboard' %}" class="forgot-password">
-                                Mot de passe oublié ?
-                            </a>
+                            <a href="#">Mot de passe oublié ?</a>
+
                         </div>
-                        
-        <a href="{% url 'utilisateur_dashboard' %}" class="btn-login">
+<button type="submit" class="btn-login">
     Se connecter
-</a>
-
-
+</button>
                     </form>
-                    
-                    <div class="divider">
-                        Ou connectez-vous avec
-                    </div>
-                    
-                    <!-- Connexion sociale -->
-                    <div class="social-login">
-                        <button class="btn-social btn-google">
-                            <i class="fab fa-google social-icon google-icon"></i>
-                            Google
-                        </button>
-                        <button class="btn-social btn-microsoft">
-                            <i class="fab fa-microsoft social-icon microsoft-icon"></i>
-                            Microsoft
-                        </button>
-                    </div>
                     
                     <!-- Lien d'inscription -->
                     <div class="register-link">
                         <p class="register-text">
                             Vous n'avez pas de compte ? 
-                            <a href="register.html">S'inscrire maintenant</a>
+                            <a href="{% url 'register' %}">S'inscrire maintenant</a>
                         </p>
                     </div>
                 </div>
@@ -870,57 +925,45 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>LearnHub</h3>
-                <p>Votre plateforme d'apprentissage en ligne pour acquérir de nouvelles compétences, 
-                développer votre carrière et réaliser vos ambitions éducatives.</p>
-                <p>📍 Paris, France</p>
-                <p>📧 contact@learnhub.fr</p>
-                <p>📞 +33 1 23 45 67 89</p>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Navigation</h3>
-                <a href="index.html">Accueil</a>
-                <a href="index.html#about">À propos</a>
-                <a href="index.html#courses">Catalogue des cours</a>
-                <a href="index.html#instructors">Instructeurs</a>
-                <a href="index.html#pricing">Tarifs</a>
-                <a href="index.html#contact">Contact</a>
-            </div>
-            
-            <div class="footer-section">
-                <h3>Assistance</h3>
-                <a href="#">Centre d'aide</a>
-                <a href="forgot-password.html">Mot de passe oublié</a>
-                <a href="#">Conditions d'utilisation</a>
-                <a href="#">Politique de confidentialité</a>
-                <a href="#">FAQ</a>
-            </div>
-
-        </div>
-        
-        <div class="copyright">
-            © 2023 LearnHub - Plateforme de Cours en Ligne. Tous droits réservés.
-            <div style="margin-top: 1rem; font-size: 0.8rem;">
-                Apprenez aujourd'hui, excellez demain.
-            </div>
-        </div>
-    </footer>
-
+   
    <script>
-    // Seulement le toggle password si tu gardes le champ
-    document.addEventListener('DOMContentLoaded', function() {
-        const togglePassword = document.getElementById('togglePassword');
-        if (togglePassword) {
-            togglePassword.addEventListener('click', function() {
-                // Simple toggle si tu as gardé le champ
-            });
-        }
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('togglePassword');
+    const inputField = document.getElementById('password');
+
+    if (toggleBtn && inputField) {
+        toggleBtn.addEventListener('click', function () {
+            const type = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputField.setAttribute('type', type);
+
+            const eyeIcon = toggleBtn.querySelector('i');
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+    }
+});
 </script>
+
+{% if messages %}
+  <div id="toast-container">
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="toast toast-success">
+          <span class="toast-icon">✔</span>
+          <span class="toast-text">{{ message }}</span>
+          <span class="toast-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+
 </body>
 </html>
