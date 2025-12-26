@@ -32,7 +32,7 @@ def login_view(request):
             if user.role == 'ADMIN':
                 return redirect('administrateur_dashboard')
             else:
-                return redirect('dashboard_student')
+                return redirect('utilisateur_dashboard')
 
         messages.error(request, "Email ou mot de passe incorrect")
 
@@ -85,7 +85,7 @@ def logout_view(request):
 def dashboard_student(request):
     if request.user.role != 'ETUDIANT':
         return HttpResponseForbidden("Accès refusé")
-    return render(request, 'pages/dashboard/dashboard_student.html')
+    return render(request, 'utilisateur/dashboard.html')
 
 
 @login_required
